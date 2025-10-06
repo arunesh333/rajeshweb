@@ -1,0 +1,544 @@
+/* =========================================================
+   TERMINAL PORTFOLIO — FINAL OPTIMIZED VERSION
+   Author: Arunesh
+   Version: Production Build
+   ========================================================= */
+
+/* ---------- Global ---------- */
+:root {
+  --bg-color: #121212;
+  --text-color: #e0e0e0;
+  --accent-color: #00ff88; /* Better contrast neon */
+  --accent-secondary: #00ffff;
+  --card-bg: rgba(30, 30, 30, 0.75);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-color: var(--bg-color);
+  image-rendering: auto;
+  color: var(--text-color);
+  line-height: 1.6;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Dark overlay for readability */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(18, 18, 18, 0.85);
+  z-index: -1;
+}
+/* --- Hero Content Wrapper for Side-by-Side Layout --- */
+.hero-content-wrapper {
+  display: flex;
+  flex-direction: column; /* Default for mobile */
+  align-items: center;
+  width: 100%;
+  max-width: 1200px; /* Adjust as needed */
+  margin-top: 2rem;
+  gap: 3rem; /* Space between text and terminal */
+}
+
+.hero-text-container {
+  text-align: center; /* Center text on small screens */
+  flex-shrink: 0; /* Prevent text from shrinking too much */
+}
+
+/* Adjustments for terminal in the new layout */
+#terminal {
+  width: 100%; /* Take full width of its container on mobile */
+  height: 350px; /* Slightly increase height for better readability */
+  max-width: 650px; /* Still limit max width */
+  margin-top: 0; /* Remove top margin, handled by gap */
+}
+
+
+/* --- Media Query for Desktop (Side-by-Side) --- */
+@media (min-width: 900px) { /* Adjust breakpoint as needed */
+  .hero-content-wrapper {
+    flex-direction: row; /* Arrange side-by-side on larger screens */
+    justify-content: center; /* Center the two columns */
+    align-items: flex-start; /* Align content to the top */
+    gap: 5rem; /* More space between text and terminal on desktop */
+  }
+
+  .hero-text-container {
+    text-align: left; /* Align text to the left on desktop */
+    width: 40%; /* Give it some width */
+    max-width: 450px; /* Prevent it from getting too wide */
+    padding-top: 3rem; /* Adjust to visually align with terminal top */
+  }
+
+  #terminal {
+    width: 60%; /* Terminal takes more width */
+    max-width: 700px; /* Allow it to be a bit wider */
+  }
+
+  /* Adjustments to main hero section to accommodate new wrapper */
+  .hero {
+    min-height: 80vh; /* Ensure enough space */
+    justify-content: center; /* Vertically center the wrapper */
+  }
+}
+
+/* Adjust existing hero styles to accommodate the wrapper */
+.hero {
+  /* Remove old center alignments if they conflict with new wrapper centering */
+  display: flex; /* Ensure flex is used for main hero section */
+  flex-direction: column; /* Arrange content vertically within hero */
+  align-items: center; /* Center items horizontally within hero */
+  justify-content: center; /* Vertically center content */
+}
+
+/* Ensure the hero-name and hero-tagline still get their animations */
+.hero-name, .hero-tagline {
+  margin-bottom: 0.5rem; /* Small gap between name and tagline */
+}
+/* ---------- Hero ---------- */
+.hero-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  text-align: center;
+  background: transparent; /* Avoid double layering */
+  position: relative;
+  z-index: 1;
+  padding-top: 10vh;
+}
+
+.hero-name {
+  font-family: 'Fira Code', monospace;
+  font-size: 3.5rem;
+  color: var(--accent-color);
+  text-shadow: 0 0 10px rgba(0, 255, 0, 0.7);
+  animation: flicker 3s infinite;
+}
+
+/* Neon flicker effect */
+@keyframes flicker {
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; }
+  20%, 24%, 55% { opacity: 0.4; }
+}
+
+.hero-tagline {
+  font-family: 'Fira Code', monospace;
+  font-size: 1.5rem;
+  margin: 1rem 0;
+  overflow: hidden;
+  border-right: 2px solid var(--accent-color);
+  white-space: nowrap;
+  width: 0;
+  animation: typing 3s steps(30, end) forwards, blink 1s step-end infinite;
+}
+
+@keyframes typing {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+@keyframes blink {
+  0%, 100% { border-color: transparent; }
+  50% { border-color: var(--accent-color); }
+}
+
+.hero-buttons {
+  margin-top: 1.5rem;
+}
+/* ---------- Interactive Terminal ---------- */
+#terminal {
+  font-family: 'Fira Code', monospace;
+  width: 100%;
+  max-width: 650px;
+  height: 300px;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--accent-color);
+  border-radius: 4px;
+  box-shadow: 0 0 15px rgba(0, 255, 136, 0.2);
+  display: flex;
+  flex-direction: column;
+  margin-top: 2rem;
+  backdrop-filter: blur(4px);
+}
+
+#terminal-output {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 1rem;
+  font-size: 0.9rem;
+}
+
+#terminal-output p {
+  margin-bottom: 0.5rem;
+  white-space: pre-wrap; /* Respects spaces and newlines */
+}
+
+.command-output {
+  color: var(--text-color);
+}
+
+.command-input-log {
+  color: var(--accent-secondary); /* Cyan for user input */
+}
+
+#terminal-input-line {
+  display: flex;
+  align-items: center;
+  padding: 0 1rem 1rem 1rem;
+}
+
+#terminal-input-line .prompt {
+  color: var(--accent-color);
+  margin-right: 0.5rem;
+  white-space: nowrap;
+}
+
+#terminal-input {
+  flex-grow: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text-color);
+  font-family: 'Fira Code', monospace;
+  font-size: 0.9rem;
+}
+
+/* Custom scrollbar for terminal */
+#terminal-output::-webkit-scrollbar {
+  width: 8px;
+}
+#terminal-output::-webkit-scrollbar-track {
+  background: var(--bg-color);
+}
+#terminal-output::-webkit-scrollbar-thumb {
+  background-color: var(--accent-color);
+  border-radius: 4px;
+}
+.btn-terminal {
+  font-family: 'Fira Code', monospace;
+  border: 2px solid var(--accent-color);
+  color: var(--accent-color);
+  padding: 1rem 1rem;
+  margin: 0.3rem;
+  text-decoration: none;
+  display: inline-block;
+  transition: all 0.3s ease-in-out;
+  text-transform: uppercase;
+}
+
+.btn-terminal:hover {
+  color: var(--bg-color);
+  background-color: var(--accent-color);
+  box-shadow: 0 0 12px var(--accent-color);
+  letter-spacing: 1px;
+  transform: scale(1.05);
+}
+
+/* ---------- Section Base ---------- */
+section {
+  padding: 5rem 2rem;
+  max-width: 1200px;
+  margin: 3rem auto;
+  position: relative;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.section-title {
+  font-family: 'Fira Code', monospace;
+  font-size: 1.8rem;
+  color: var(--accent-secondary);
+  text-align: center;
+  margin-bottom: 3rem;
+  text-shadow: 0 0 8px rgba(0, 255, 255, 0.6);
+  letter-spacing: 1px;
+}
+
+/* ---------- About ---------- */
+.about-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+.about-content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.about-text {
+  max-width: 70%;
+  letter-spacing: 1px;
+  background: rgba(30, 30, 30, 0.6);
+  padding: 1.5rem;
+  border-radius: 10px;
+}
+
+/* ---------- Reusable Card Style ---------- */
+.glass-card {
+  background: var(--card-bg);
+  border-left: 4px solid var(--accent-color);
+  border-radius: 8px;
+  backdrop-filter: blur(6px);
+  transition: all 0.3s ease-in-out;
+}
+
+/* ---------- Projects ---------- */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.project-card {
+  composes: glass-card;
+  padding: 1.5rem;
+}
+
+.project-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 12px var(--accent-color);
+}
+
+.project-card ul {
+  margin: 0.5rem 0;
+  padding-left: 1.5rem;
+}
+
+/* ---------- Certifications ---------- */
+.certs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+}
+
+.cert-card {
+  composes: glass-card;
+  padding: 1rem;
+  text-align: center;
+}
+
+.cert-card img {
+  width: 95%;
+  margin-bottom: 1rem;
+  transition: transform 0.3s ease-in-out;
+}
+
+.cert-card img:hover {
+  transform: scale(1.4);
+  border: 2px solid var(--accent-color);
+}
+
+/* ---------- Skills ---------- */
+.skills-section {
+  text-align: center;
+}
+
+.skills-category-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem 2.5rem;
+  justify-items: center;
+  align-items: start;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.skills-category {
+  background: rgba(18, 18, 18, 0.6);
+  padding: 1.5rem;
+  border-radius: 12px;
+  width: 100%;
+  box-shadow: 0 0 8px rgba(0,255,0,0.1);
+  transition: all 0.3s ease-in-out;
+}
+
+.skills-category:hover {
+  box-shadow: 0 0 16px rgba(0,255,0,0.2);
+  transform: translateY(-4px);
+}
+
+.skills-category h3 {
+  color: var(--accent-color);
+  font-size: 1.2rem;
+  margin-bottom: 1.2rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+.skills-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.2rem;
+}
+
+.skill-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1.1rem 1.4rem;
+  margin: 1.5rem 0rem;
+  background: linear-gradient(145deg, rgba(30,30,30,0.8), rgba(20,20,20,0.6));
+  border-radius: 12px;
+  border-left: 3px solid var(--accent-color);
+  transition: all 0.3s ease-in-out;
+  min-width: 110px;
+  backdrop-filter: blur(6px);
+  opacity: 0;
+  animation: fadeInUp 0.6s ease forwards;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.skill-card:nth-child(odd) { animation-delay: 0.2s; }
+.skill-card:nth-child(even) { animation-delay: 0.4s; }
+
+.skill-card i {
+  font-size: 2rem;
+  color: var(--accent-color);
+}
+
+.skill-card:hover {
+  box-shadow: 0 0 20px var(--accent-color);
+  transform: translateY(-5px) scale(1.05);
+}
+
+.skill-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  border: 1px solid var(--accent-color);
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.skill-card:hover::before { opacity: 0.4; }
+
+.skill-card::after {
+  content: attr(data-info);
+  position: absolute;
+  bottom: -2.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.8rem;
+  background: var(--card-bg);
+  color: var(--text-color);
+  padding: 0.4rem 0.7rem;
+  border-radius: 6px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease-in-out;
+  white-space: nowrap;
+}
+
+.skill-card:hover::after { opacity: 1; }
+
+/* ---------- Contact ---------- */
+.contact-section {
+  text-align: center;
+}
+
+.contact-buttons {
+  margin-top: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* ---------- Scroll Fade-in Animation ---------- */
+.fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 768px) {
+  body {
+    background-attachment: scroll; /* fix mobile lag */
+  }
+  .about-content {
+    flex-direction: column;
+    align-items: center;
+  }
+  .skills-category-container {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+  }
+  .skill-card {
+    min-width: 90px;
+    padding: 0.9rem;
+  }
+  .skills-category h3 {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-name {
+    font-size: 2rem;
+  }
+  .hero-tagline {
+    font-size: 1rem;
+  }
+}
+/* ---------- Footer ---------- */
+footer {
+  text-align: center;
+  padding: 2rem 1rem;
+  margin-top: 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(224, 224, 224, 0.7); /* Slightly muted text color */
+  font-size: 1rem;
+}
+
+footer p {
+  margin: 0.3rem 0; /* Adds a little space between the lines */
+}
+
+footer a {
+  color: var(--accent-secondary); /* Uses the cyan accent color from your theme */
+  text-decoration: none;
+  font-weight: bold;
+  transition: all 0.3s ease-in-out;
+}
+
+footer a:hover {
+  color: var(--accent-color); /* Switches to the main green accent on hover */
+  text-shadow: 0 0 8px var(--accent-color);
+}
