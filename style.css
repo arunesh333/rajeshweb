@@ -306,26 +306,77 @@ section {
   transition: all 0.3s ease-in-out;
 }
 
-/* ---------- Projects ---------- */
 .projects-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2.5rem;
 }
 
 .project-card {
-  composes: glass-card;
-  padding: 1.5rem;
+  background: rgba(30, 30, 30, 0.8);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  padding: 1.8rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .project-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 0 12px var(--accent-color);
+  box-shadow: 0 8px 20px rgba(0, 255, 0, 0.2);
 }
 
-.project-card ul {
-  margin: 0.5rem 0;
-  padding-left: 1.5rem;
+/* Header with date on right */
+.project-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.8rem;
+}
+
+.project-date {
+  font-size: 0.9rem;
+  color: var(--accent-color);
+  font-weight: 600;
+}
+
+/* Description */
+.project-description {
+  margin-bottom: 1rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+/* Bullets with icons */
+.project-points {
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 1rem;
+}
+
+.project-points li {
+  position: relative;
+  padding-left: 1.8rem;
+  margin-bottom: 0.6rem;
+  font-family: 'Fira Code', monospace;
+}
+
+.project-points li::before {
+  content: "▹"; /* small triangle for a clean look */
+  position: absolute;
+  left: 0;
+  color: var(--accent-color);
+}
+
+/* Links */
+.project-links a {
+  text-decoration: none;
+  color: var(--accent-color);
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.project-links a:hover {
+  color: #00ff80;
 }
 
 /* ---------- Certifications ---------- */
